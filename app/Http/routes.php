@@ -11,6 +11,27 @@
 |
 */
 
+use Illuminate\Http\Request;
+use App\Item;
+
 Route::get('/', function () {
-    return view('welcome');
+    $items = Item::getItems();
+    return view('items');
+});
+
+Route::get('get-items', function () {
+   $items = Item::getItems();
+   return response()->json($items);
+});
+
+Route::post('save-item', function (Request $request) {
+    $new = new Item;
+    
+    $new->product = $request->product;
+    $new->quantity = $request->quantity;
+    $new->price = $request->price;
+    
+    $new->saveItem();
+    
+    return response()->json($new);
 });
